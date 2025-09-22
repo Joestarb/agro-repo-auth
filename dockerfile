@@ -37,4 +37,4 @@ RUN pnpm run build
 EXPOSE 3000
 
 # Comando para ejecutar la aplicación
-CMD ["pnpm", "run", "start:prod"]
+CMD ["pnpm", "run", "start:dev"]

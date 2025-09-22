@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -21,4 +22,19 @@ import { AuthModule } from './auth/auth.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private dataSource: DataSource) {}
+
+  onModuleInit() {
+    // TypeORM ya inicializa automáticamente la conexión con forRoot()
+    // Solo verificamos que esté conectado
+    if (this.dataSource.isInitialized) {
+      console.log('Conectado a la base de datos');
+    } else {
+      console.error(
+        'Error: La conexión a la base de datos no se pudo establecer',
+      );
+      process.exit(1);
+    }
+  }
+}

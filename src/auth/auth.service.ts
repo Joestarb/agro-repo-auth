@@ -17,6 +17,13 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
+    const user = await this.usersRepo.findOne({ where: { email: dto.email } });
+    if (user)
+      throw new UnauthorizedException('User already exists', {
+        cause: new Error(),
+        description: 'This email is already registered',
+      });
+
     const hashed = await bcrypt.hash(dto.password, 10);
     const u = this.usersRepo.create({
       email: dto.email,
