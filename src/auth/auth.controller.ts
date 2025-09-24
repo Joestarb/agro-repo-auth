@@ -1,14 +1,21 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import {
+  LoginDto,
+  RegisterDto,
+} from '../../../../packages/common/dist/dtos/user.dto';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto } from '@agro-project/common/dtos/user.dto';
+
 @Controller('auth')
 export class AuthController {
   constructor(private auth: AuthService) {}
 
-  @Post('register') register(@Body() dto: RegisterDto) {
+  @Post('register')
+  register(@Body(ValidationPipe) dto: RegisterDto) {
     return this.auth.register(dto);
   }
-  @Post('login') login(@Body() dto: LoginDto) {
+
+  @Post('login')
+  login(@Body(ValidationPipe) dto: LoginDto) {
     return this.auth.login(dto);
   }
 }

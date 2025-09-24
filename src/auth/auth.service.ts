@@ -4,6 +4,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
+import {
+  LoginDto,
+  RegisterDto,
+} from '../../../../packages/common/dist/dtos/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +16,14 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(dto: { email: string; password: string; role?: string }) {
+  async register(dto: RegisterDto) {
+    const user = await this.usersRepo.findOne({ where: { email: dto.email } });
+    if (user)
+      throw new UnauthorizedException('User already exists', {
+        cause: new Error(),
+        description: 'This email is already registered',
+      });
+
     const hashed = await bcrypt.hash(dto.password, 10);
     const u = this.usersRepo.create({
       email: dto.email,
@@ -27,7 +38,7 @@ export class AuthService {
     return rest;
   }
 
-  async login(dto: { email: string; password: string }) {
+  async login(dto: LoginDto) {
     const user = await this.usersRepo.findOne({ where: { email: dto.email } });
     if (!user) throw new UnauthorizedException('Invalid credentials');
     const ok = await bcrypt.compare(dto.password, user.password);
