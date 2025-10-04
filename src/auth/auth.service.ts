@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import {
   LoginDto,
   RegisterDto,
-} from '../../../../packages/common/dist/dtos/user.dto';
+} from '../../../../packages/common/src/dtos/user.dto';
 
 @Injectable()
 export class AuthService {
