@@ -12,6 +12,9 @@ COPY pnpm-workspace.yaml ./
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 
+# Copiar configuración base de TypeScript
+COPY tsconfig.json ./
+
 # Copiar el paquete common
 COPY packages/common packages/common
 
