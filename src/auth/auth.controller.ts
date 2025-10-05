@@ -2,7 +2,7 @@ import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
 import {
   LoginDto,
   RegisterDto,
-} from '../../../../packages/common/src/dtos/user.dto';
+} from '../../../../packages/common/dist/dtos/user.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
